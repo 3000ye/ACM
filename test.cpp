@@ -7,13 +7,13 @@ typedef long long ll;
 typedef long double ld;
 
 void solve() {
-    
-    clock_t c, d;
-    c = clock();
-    int y = 3;
-    for (int i = 0; i < 100000000; i ++) y = (y * 5) >> 1;
-    d = clock();
-    cout << d - c << endl;
+    int dic[10][10];
+
+    memset(dic, -1, sizeof(dic));
+    for (int i = 0; i < 10; i ++) {
+        for (int j = 0; j < 10; j ++) cout << dic[i][j];
+        cout << endl;
+    }
 }
 
 int main() {
