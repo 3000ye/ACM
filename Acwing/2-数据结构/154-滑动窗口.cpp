@@ -5,14 +5,6 @@ typedef long long ll;
 typedef long double ld;
 
 void solve() {
-    int n, k; cin >> n >> k;
-    queue<int> que;
-    vector<int> ls;
-
-    for (int i = 0; i < n; i ++) {
-        int k; cin >> k; ls.push_back(k);
-    }
-
     
 }
 
