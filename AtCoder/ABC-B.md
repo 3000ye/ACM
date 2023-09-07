@@ -640,3 +640,513 @@ for i in range(64):
 print(sum)
 ```
 
+## ABC-305B
+
+### 题解（解题时间：`3:28`）
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+void solve() {
+    char p, q; cin >> p >> q;
+
+    map<char, int> dic{
+        {'A', 0}, {'B', 3}, {'C', 4}, {'D', 8}, {'E', 9}, {'F', 14}, {'G', 23}
+    };
+
+    cout << abs(dic[p] - dic[q]) << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## ABC-304B
+
+#### 题解（解题时间：`6:40`）
+
+直接模拟即可：
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+void solve() {
+    int n; cin >> n;
+
+    if (n <= 1000) cout << n << endl;
+    else if (n <= 10000) cout << n / 10 << "0" << endl;
+    else if (n <= 100000) cout << n / 100 << "00" << endl;
+    else if (n <= 1000000) cout << n / 1000 << "000" << endl;
+    else if (n <= 10000000) cout << n / 10000 << "0000" << endl;
+    else if (n <= 100000000) cout << n / 100000 << "00000" << endl;
+    else cout << n  1000000 << "000000" << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-303B](https://atcoder.jp/contests/abc303/tasks/abc303_b)
+
+### 题面翻译
+
+有 $M$ 张照片，每张照片有同样的 $N$ 个人，如果某两个人在任何一张照片中都不相邻，则说明他们的关系不好，请你找出有多少对关系不好的人。
+
+### 题解（解题时间：`6:38`）
+
+用二维矩阵`dic[i][j]`来记录`i`与`j`的关系，需要注意的是`dic[1][i]`应不计入。
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+int dic[100][100];
+
+void solve() {
+    int n, m; cin >> n >> m;
+    
+    while (m -- ) {
+        vector<int> ls(n);
+        for (int i = 0; i < n; i ++) cin >> ls[i];
+
+        for (int i = 1; i < n; i ++) {
+            dic[ls[i - 1]][ls[i]] = dic[ls[i]][ls[i - 1]] = 1;
+        }
+    }
+
+    int res = 0;
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= n; j ++) {
+            if (!dic[i][j]) {
+                res ++;
+                // cout << i << " " << j << endl;
+            }
+        }
+    }
+
+    cout << (res - n) / 2 << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-302B](https://atcoder.jp/contests/abc302/tasks/abc302_b)
+
+给出一个字母构成的矩阵，请你找出以：横线、竖线、斜线构成的`snuke`单词，并按顺序输出这五个字母的坐标。
+
+### 题解（解题时间：`21:11`）
+
+超级大模拟，一共有`8`种情况，需仔细：
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+void solve() {
+    int n, m; cin >> n >> m;
+    vector<string> ls(n + 1);
+    for (int i = 1; i <= n; i ++) {
+        cin >> ls[i]; ls[i] = '0' + ls[i];
+    }
+
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= m; j ++) {
+            if (ls[i][j] == 's') {
+                // 横线
+                if (j >= 5) {  // 从右往左
+                    if (ls[i][j - 1] == 'n' and ls[i][j - 2] == 'u' and ls[i][j - 3] == 'k' and ls[i][j - 4] == 'e') {
+                        cout << i << " " << j << endl;
+                        cout << i << " " << j - 1 << endl;
+                        cout << i << " " << j - 2 << endl;
+                        cout << i << " " << j - 3 << endl;
+                        cout << i << " " << j - 4 << endl;
+                        return;
+                    }
+                }
+                if (j <= m - 4) {  // 从左往右
+                    if (ls[i][j + 1] == 'n' and ls[i][j + 2] == 'u' and ls[i][j + 3] == 'k' and ls[i][j + 4] == 'e') {
+                        cout << i << " " << j << endl;
+                        cout << i << " " << j + 1 << endl;
+                        cout << i << " " << j + 2 << endl;
+                        cout << i << " " << j + 3 << endl;
+                        cout << i << " " << j + 4 << endl;
+                        return;
+                    }
+                }
+
+                // 竖线
+                if (i >= 5) {  // 从下往上
+                    if (ls[i - 1][j] == 'n' and ls[i - 2][j] == 'u' and ls[i - 3][j] == 'k' and ls[i - 4][j] == 'e') {
+                        cout << i << " " << j << endl;
+                        cout << i - 1 << " " << j << endl;
+                        cout << i - 2 << " " << j << endl;
+                        cout << i - 3 << " " << j << endl;
+                        cout << i - 4 << " " << j << endl;
+                        return;
+                    }
+                }
+                if (i <= n - 4) {  // 从上往下
+                    if (ls[i + 1][j] == 'n' and ls[i + 2][j] == 'u' and ls[i + 3][j] == 'k' and ls[i + 4][j] == 'e') {
+                        cout << i << " " << j << endl;
+                        cout << i + 1 << " " << j << endl;
+                        cout << i + 2 << " " << j << endl;
+                        cout << i + 3 << " " << j << endl;
+                        cout << i + 4 << " " << j << endl;
+                        return;
+                    }
+                }
+
+                // 斜线
+                if (i >= 5 and j >= 5) {
+                    if (ls[i - 1][j - 1] == 'n' and ls[i - 2][j - 2] == 'u' and ls[i - 3][j - 3] == 'k' and ls[i - 4][j - 4] == 'e') {
+                        cout << i << " " << j << endl;
+                        cout << i - 1 << " " << j - 1 << endl;
+                        cout << i - 2 << " " << j - 2 << endl;
+                        cout << i - 3 << " " << j - 3 << endl;
+                        cout << i - 4 << " " << j - 4 << endl;
+                        return;
+                    }
+                }
+                if (i >= 5 and j <= m - 4) {
+                    if (ls[i - 1][j + 1] == 'n' and ls[i - 2][j + 2] == 'u' and ls[i - 3][j + 3] == 'k' and ls[i - 4][j + 4] == 'e') {
+                        cout << i << " " << j << endl;
+                        cout << i - 1 << " " << j + 1 << endl;
+                        cout << i - 2 << " " << j + 2 << endl;
+                        cout << i - 3 << " " << j + 3 << endl;
+                        cout << i - 4 << " " << j + 4 << endl;
+                        return ;
+                    }
+                }
+                if (i <= n - 4 and j >= 5) {
+                    if (ls[i + 1][j - 1] == 'n' and ls[i + 2][j - 2] == 'u' and ls[i + 3][j - 3] == 'k' and ls[i + 4][j - 4] == 'e') {
+                        cout << i << " " << j << endl;
+                        cout << i + 1 << " " << j - 1 << endl;
+                        cout << i + 2 << " " << j - 2 << endl;
+                        cout << i + 3 << " " << j - 3 << endl;
+                        cout << i + 4 << " " << j - 4 << endl;
+                        return;
+                    }
+                }
+                if (i <= n - 4 and j <= m - 4) {
+                    if (ls[i + 1][j + 1] == 'n' and ls[i + 2][j + 2] == 'u' and ls[i + 3][j + 3] == 'k' and ls[i + 4][j + 4] == 'e') {
+                        cout << i << " " << j << endl;
+                        cout << i + 1 << " " << j + 1 << endl;
+                        cout << i + 2 << " " << j + 2 << endl;
+                        cout << i + 3 << " " << j + 3 << endl;
+                        cout << i + 4 << " " << j + 4 << endl;
+                        return;
+                    }
+                }
+            }
+            else continue;
+        }
+    }
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+简洁写法：
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int n,m,x,y;
+	int dx[8]={-1,-1,-1,0,0,1,1,1};
+	int dy[8]={-1,0,1,-1,1,-1,0,1};
+	string str;
+
+	cin>>n>>m;
+	vector<string> s(n);
+	for(int i=0;i<n;i++)cin>>s[i];
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			for(int k=0;k<8;k++){
+				str="";
+				for(int t=0;t<5;t++){
+					x=i+t*dx[k],y=j+t*dy[k];
+					if((x<0)||(x>=n)||(y<0)||(y>=m))break;
+					str+=s[x][y];
+				}
+              	if(str=="snuke"){
+					for(int t=0;t<5;t++){
+						x=i+t*dx[k]+1,y=j+t*dy[k]+1;
+						cout<<x<<" "<<y<<endl;
+					}
+					return 0;
+				}
+			}
+		}
+	}
+
+	return 0;
+}
+
+```
+
+## [ABC-301B](https://atcoder.jp/contests/abc301/tasks/abc301_b)
+
+### 题面翻译
+
+给出一个长度为 $N$ 的整数序列，请你进行一下操作：
+
+- 如果相邻两数之差的绝对值不为`1`：插入两数的中间值。
+
+请输出最终序列。
+
+### 题解（解题时间：`3:50`）
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+void solve() {
+    int n; cin >> n;
+    vector<int> ls(n);
+
+    for (int i = 0; i < n; i ++) cin >> ls[i];
+    for (int i = 0; i < n - 1; i ++) {
+        cout << ls[i] << " ";
+        if (abs(ls[i] - ls[i + 1]) != 1) {
+            if (ls[i] < ls[i + 1]) {
+                for (int j = ls[i] + 1; j < ls[i + 1]; j ++) {
+                    cout << j << " ";
+                }
+            }
+            else {
+                for (int j = ls[i] - 1; j > ls[i + 1]; j --) {
+                    cout << j << " ";
+                }
+            }
+        }
+    }
+    cout << ls[n - 1] << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [*ABC-300B](https://atcoder.jp/contests/abc300/tasks/abc300_b)
+
+### 题面翻译
+
+给出两个矩阵`A`、`B`，其中对`A`矩阵进行以下操作：
+
+- 所有行循环`s`次
+- 所有列循环`t`次
+
+如果存在`s`和`t`使得`A = B`，返回`Yes`，否则返回`No`。
+
+### 题解
+
+暴力搜索，要注意循环可以使用：`(i - s + n) % n`来实现：
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+void solve() {
+    int n, m; cin >> n >> m;
+    vector<string> A(n), B(n);
+    for (auto &c : A) cin >> c;
+    for (auto &c : B) cin >> c;
+
+    for (int s = 0; s < n; s ++) {
+        for (int t = 0; t < m; t ++) {
+            bool flag = true;
+
+            for (int i = 0; i < n; i ++) {
+                for (int j = 0; j < m; j ++) {
+                    if (A[(i - s + n) % n][(j - t + m) % m] != B[i][j]) {
+                        flag = false; break;
+                    }
+                }
+            }
+
+            if (flag) {cout << "Yes" << endl; return;}
+        }
+    }
+
+    cout << "No" << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## ABC-299B
+
+有 $N$ 个玩家玩卡牌游戏，每张牌有一个颜色 $C_i$ 和等级 $R_i$，每人一张牌。
+
+现在给出一个颜色 $t$：
+
+- 如果有玩家的卡牌颜色为 $t$，则等级最高的人为赢家。
+- 如果没有，则以第一个玩家卡牌的颜色为准，等级最高的人为赢家（第一个玩家也参与）。
+
+### 题解（解题时间：`13:20`）
+
+记录颜色 $t$ 和第一个玩家的卡牌颜色所对应的玩家序列，然后按要求输出即可：
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+typedef pair<int, int> pii;
+
+bool cmp(pii a, pii b) {
+    return a.second >= b.second;
+}
+
+void solve() {
+    int n, t; cin >> n >> t;
+    vector<pii> ls(n);
+    vector<pii> res, res0;
+
+    for (auto &x : ls) cin >> x.first;
+    for (auto &x : ls) cin >> x.second;
+
+    for (int i = 0; i < n; i ++) {
+        if (ls[i].first == t) res.push_back({i + 1, ls[i].second});
+        if (ls[i].first == ls[0].first) res0.push_back({i + 1, ls[i].second});
+    }
+
+    if (res.size() >= 1) {
+        sort(res.begin(), res.end(), cmp);
+        cout << res[0].first << endl;
+    }
+    else {
+        sort(res0.begin(), res0.end(), cmp);
+        cout << res0[0].first << endl;
+    }
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-298B](https://atcoder.jp/contests/abc298/tasks/abc298_b)
+
+### 题面翻译
+
+给出两个大小为 $N$ 的整数方阵`A`和`B`，请你判断`A`是否可能通过`rotate`操作满足条件：
+
+- `A[i][j] = 1`时有`B[i][j] = 1`恒成立。
+
+`rotate`操作：`A[i][j] = A[N + 1 - j][i]`。
+
+### 题解
+
+最多`rotate`四次就会回到原位：
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+int A[110][110], B[110][110], C[110][110];
+
+void solve() {
+    int n; cin >> n;
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= n; j ++) {cin >> A[i][j]; C[i][j] = A[i][j];}
+    }
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= n; j ++) cin >> B[i][j];
+    }
+
+    for (int k = 0; k < 4; k ++) {
+        // 判断是否满足条件
+        bool flag = true;
+        for (int i = 1; i <= n; i ++) {
+            for (int j = 1; j <= n; j ++) {
+                if (A[i][j] == 1 and B[i][j] != 1) {
+                    flag = false; break;
+                }
+            }
+            if (!flag) break;
+        }
+
+        if (flag) {cout << "Yes" << endl; return ;}
+
+        // rotate
+        for (int i = 1; i <= n; i ++) {
+            for (int j = 1; j <= n; j ++) {
+                C[i][j] = A[n + 1 - j][i];
+            }
+        }
+        for (int i = 1; i <= n; i ++) {
+            for (int j = 1; j <= n; j ++) {
+                A[i][j] = C[i][j];
+            }
+        }
+    }
+
+    cout << "No" << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
