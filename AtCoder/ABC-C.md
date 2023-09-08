@@ -229,3 +229,115 @@ int main() {
 }
 ```
 
+## [ABC-313C](https://atcoder.jp/contests/abc313/tasks/abc313_c)
+
+### 题面翻译
+
+有一个长度为 $N$ 的整数序列`A`，每次操作可以使 $A_i = A_i - 1, A_j = A_j + 1$。
+
+请问至少需要多少次操作才能使序列中最小值和最大值至多相差`1`？
+
+### 题解（解题时间：`9:30`）
+
+由题意知，最终序列中最多只有两个不同的数。
+
+因此，我们先求出序列和`sum`，然后分别求出`x = sum / n, y = sum % n`。即：序列最终有`y`个`x + 1`，`n - y`个`x`。
+
+为实现最小操作数，我们将原序列按升序排列，前面的数与`x`做比较，后面的数与`x + 1`做比较，得到操作总数为`res`，由于操作时是一上一下，所以答案为`res / 2`。
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+void solve() {
+    int n; cin >> n;
+    vector<int> ls(n);
+
+    ll sum = 0;
+    for (auto &x : ls) {cin >> x; sum += x;}
+
+    ll x = sum / n, y = sum % n;
+    // 有 y 个 x + 1, n - y 个 x
+    sort(ls.begin(), ls.end());
+    ll res = 0, idx = 0;
+    for (auto i : ls) {
+        idx ++;
+        if (idx <= n - y) res += abs(i - x);
+        else res += abs(i - x - 1);
+    }
+
+    cout << res / 2 << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## ABC-312C
+
+### 题面翻译
+
+有 $N$ 的卖家和 $M$ 个买家，卖家的价格必须大于等于要价，买家的价格必须小于等于预算。
+
+现在请你找出最小的价格，使得卖家的人数大于等于买家的人数。
+
+### 题解
+
+二分查找：
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+int n, m;
+vector<int> A, B;
+
+bool check(int mid) {
+    int sell = 0, buy = 0;
+    for (int i = 0; i < n; i ++) {
+        if (A[i] <= mid) sell ++;
+    }
+    for (int i = 0; i < m; i ++) {
+        if (B[i] >= mid) buy ++;
+    }
+
+    return sell >= buy;
+}
+
+void solve() {
+    cin >> n >> m;
+    for (int i = 0; i < n; i ++) {
+        int x; cin >> x; A.push_back(x);
+    }
+    for (int i = 0; i < m; i ++) {
+        int x; cin >> x; B.push_back(x);
+    }
+
+    int l = 1, r = 1e9 + 10;
+    while (l < r) {
+        int mid = (l + r) >> 1;
+        if (check(mid)) r = mid;
+        else l = mid + 1;
+    }
+
+    cout << l << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
