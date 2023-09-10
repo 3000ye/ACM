@@ -6,6 +6,8 @@ using namespace std;
 typedef long long ll;
 typedef long double ld;
 
+
+// 前缀和
 void solve() {
     int n, q; cin >> n;
     vector<int> ls(n);
@@ -15,11 +17,7 @@ void solve() {
     while (q -- ) {
         int op; cin >> op;
 
-        if (op == 1) {
-            int l, r; cin >> l >> r;
 
-            
-        }
     }
 }
 
