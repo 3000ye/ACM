@@ -5,7 +5,8 @@ typedef long long ll;
 typedef long double ld;
 
 void solve() {
-    cout << (3 ^ 1 ^ 4 ^ 5 ^ 0 ^ 9 ^ 2) << endl;
+    int x = ((4 ^ 8) & 1);
+    cout << x << endl;
 }
 
 int main() {
