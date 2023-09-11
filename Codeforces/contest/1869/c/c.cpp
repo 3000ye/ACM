@@ -10,11 +10,7 @@ void solve() {
     int n, m; cin >> n >> m;
     
     for (int i = 0; i < n; i ++) {
-        cout << i << " ";
-        for (int j = 0; j < m; j ++) {
-            if (j != i) cout << j << " ";
-        }
-        cout << endl;
+        cout << 
     }
 }
 
