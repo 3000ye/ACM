@@ -1,3 +1,5 @@
+// Author: CastorYe
+// Time: 2023-09-11 22:56:43
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -5,14 +7,13 @@ typedef long long ll;
 typedef long double ld;
 
 void solve() {
-    cout << (1 ^ 1) << endl;
-    cout << (0 ^ 0) << endl;
-    cout << (1 ^ 0) << endl;
+    
 }
 
 int main() {
     cin.tie(0);
     ios::sync_with_stdio(false);
-    solve();
+    int T; cin >> T;
+    while (T -- ) solve();
     return 0;
 }
