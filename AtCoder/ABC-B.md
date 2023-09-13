@@ -1223,3 +1223,131 @@ int main() {
 }
 ```
 
+## [ABC-295B](https://atcoder.jp/contests/abc295/tasks/abc295_b)
+
+### 题解（解题时间：`6：30`）
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+char dic[30][30], res[30][30];
+
+void solve() {
+    int n, m; cin >> n >> m;
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= m; j ++) {
+            cin >> dic[i][j]; res[i][j] = dic[i][j];
+        }
+    }
+
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= m; j ++) {
+            if (isdigit(dic[i][j])) {
+                int k = dic[i][j] - '0';
+
+                for (int p = i - k; p <= i + k; p ++) {
+                    for (int q = j - k; q <= j + k; q ++) {
+                        // 判断边界与曼哈顿距离
+                        if (p >= 1 and p <= n and q >= 1 and q <= m and abs(p - i) + abs(q - j) <= k) {
+                            res[p][q] = '.';
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= m; j ++) cout << res[i][j];
+        cout << endl;
+    }
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-294B](https://atcoder.jp/contests/abc294/tasks/abc294_b)
+
+### 题解（解题时间：`3:25`）
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+void solve() {
+    int n, m; cin >> n >> m;
+    for (int i = 0; i < n; i ++) {
+        for (int j = 0; j < m; j ++) {
+            int k; cin >> k;
+            if (k == 0) cout << ".";
+            else {
+                cout << (char)((k - 1) + 'A');
+            }
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-293B](https://atcoder.jp/contests/abc293/tasks/abc293_b)
+
+## ABC-292B
+
+### 题解（解题时间：`3:28`）
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+typedef struct {
+    int yellow, red;
+} person;
+
+void solve() {
+    int n, q; cin >> n >> q;
+    vector<person> ls(n + 1);
+
+    while (q -- ) {
+        int op, x; cin >> op >> x;
+
+        if (op == 1) ls[x].yellow ++;
+        else if (op == 2) ls[x].red ++;
+        else {
+            if (ls[x].yellow >= 2 or ls[x].red >= 1) cout << "Yes" << endl;
+            else cout << "No" << endl;
+        }
+    }
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-291B](https://atcoder.jp/contests/abc291/tasks/abc291_b)
+
