@@ -341,3 +341,313 @@ int main() {
 }
 ```
 
+## [ABC-310C](https://atcoder.jp/contests/abc310/tasks/abc310_c)
+
+### 题面翻译
+
+给出 $N$ 个字符串，其中两个字符串相等的条件为：两个字符串相同或一个字符串与另一个字符串的反转相同。
+
+请求出有多少个不同的字符串。
+
+### 题解（解题时间：`7:26`）
+
+用`hash`存储即可，遍历字符串，如果`hash`中不存在字符串和字符串反转则`res ++`。
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+void solve() {
+    int n; cin >> n;
+
+    unordered_map<string, int> dic;
+    int res = 0;
+    for (int i = 0; i < n; i ++) {
+        string s; cin >> s;
+        string t = s;
+        reverse(t.begin(), t.end());
+
+        if (dic[s] == 0 and dic[t] == 0) res ++;
+
+        dic[s] ++; dic[t] ++;
+    }
+
+    cout << res << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [*ABC-309C](https://atcoder.jp/contests/abc309/tasks/abc309_c)
+
+### 题面翻译
+
+病人有一个 $N$ 天的吃药安排：从第 $1$ 天到 $a_i$ 天，需要吃 $b_i$ 片药。
+
+现在请你判断病人哪天吃的药的总数小于等于 $k$。
+
+### 题解
+
+可以看出，病人需要吃的药的数量是逐渐减少的。
+
+因此，我们对`vector<day(a, b)>`按`a`降序排列，反向查找`> k`的`a`，如果找到则`+ 1`输出，否则说明每天吃的药都小于等于`k`，直接输出`1`。
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+typedef struct {
+    ll a, b;
+} day;
+
+bool cmp(day x, day y) {
+    return x.a > y.a;
+}
+
+void solve() {
+    ll n, k; cin >> n >> k;
+    vector<day> ls(n);
+    for (auto &day : ls) cin >> day.a >> day.b;
+
+    sort(ls.begin(), ls.end(), cmp);
+
+    ll res = 0;
+    for (auto day : ls) {
+        res += day.b;
+
+        if (res > k) {
+            cout << day.a + 1 << endl;
+            return;
+        }
+    }
+
+    cout << 1 << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-308C](https://atcoder.jp/contests/abc308/tasks/abc308_c)
+
+### 题面翻译
+
+有 $N$ 个人抛硬币，每个人抛到 $A_i$ 次正面，$B_i$ 次反面。
+
+定义抛硬币的价值为：$\displaystyle \frac{A_i}{A_i + B_i}$
+
+请你按照价值从大到小排序，如果存在相同值则按下标上升排序。
+
+### 题解
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+typedef struct {
+    int idx;
+    ld success;
+} person;
+
+bool cmp(person x, person y) {
+    if (x.success == y.success) return x.idx < y.idx;
+    else return x.success > y.success;
+}
+
+void solve() {
+    int n; cin >> n;
+    vector<person> ls;
+    for (int i = 1; i <= n; i ++) {
+        ld a, b; cin >> a >> b;
+
+        ls.push_back(
+            {i, a / (a + b)}
+        );
+    }
+
+    sort(ls.begin(), ls.end(), cmp);
+    for (auto p : ls) {
+        cout << p.idx << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-307C](https://atcoder.jp/contests/abc307/tasks/abc307_c)
+
+## ABC-306C
+
+### 题解
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+bool cmp(pair<int, int> a, pair<int, int> b) {
+    return a.second < b.second;
+}
+
+void solve() {
+    int n; cin >> n;
+    unordered_map<int, vector<int>> dic;
+
+    for (int i = 1; i <= 3 * n; i ++) {
+        int k; cin >> k;
+        dic[k].push_back(i);
+    }
+
+    vector<pair<int, int>> ls;
+    for (int i = 1; i <= n; i ++) {
+        sort(dic[i].begin(), dic[i].end());
+        ls.push_back({i, dic[i][1]});
+    }
+
+    sort(ls.begin(), ls.end(), cmp);
+    for (auto i : ls) cout << i.first << " ";
+    cout << endl;
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-305C](https://atcoder.jp/contests/abc305/tasks/abc305_c)
+
+### 题解
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+char dic[550][550];
+int mx[4] = {1, -1, 0, 0};
+int my[4] = {0, 0, 1, -1};
+
+void solve() {
+    int n, m; cin >> n >> m;
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= m; j ++) cin >> dic[i][j];
+    }
+
+    for (int i = 1; i <= n; i ++) {
+        for (int j = 1; j <= m; j ++) {
+            if (dic[i][j] == '.') {
+                int temp = 0;
+
+                for (int k = 0; k < 4; k ++) {
+                    int x = i + mx[k], y = j + my[k];
+
+                    if (dic[x][y] == '#') temp ++;
+                }
+                if (temp >= 2) {
+                    cout << i << " " << j << endl;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-304C](https://atcoder.jp/contests/abc304/tasks/abc304_c)
+
+### 题解（栈）
+
+```cpp
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long ll;
+typedef long double ld;
+
+typedef struct {
+    int idx;
+    int x, y;
+} people;
+
+void solve() {
+    int n, d; cin >> n >> d;
+    vector<bool> flag(n + 1);
+    vector<people> ls(n + 1);
+
+    for (int i = 1; i <= n; i ++) {
+        cin >> ls[i].x >> ls[i].y;
+        ls[i].idx = i;
+    }
+
+    // 初始化栈
+    stack<people> stk;
+    stk.push(ls[1]); flag[1] = true;
+    while (!stk.empty()) {
+        people p = stk.top(); stk.pop();
+
+        for (int i = 1; i <= n; i ++) {
+            if (p.idx != ls[i].idx and !flag[ls[i].idx]) {
+                int dis = (p.x - ls[i].x) * (p.x - ls[i].x) + (p.y - ls[i].y) * (p.y - ls[i].y);
+
+                if (dis <= d * d) {
+                    flag[ls[i].idx] = true;
+                    stk.push(ls[i]);
+                }
+            }
+        }
+    }
+
+    for (int i = 1; i <= n; i ++) {
+        if (flag[i]) cout << "Yes" << endl;
+        else cout << "No" << endl;
+    }
+}
+
+int main() {
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    solve();
+    return 0;
+}
+```
+
+## [ABC-303C](https://atcoder.jp/contests/abc303/tasks/abc303_c)
+
