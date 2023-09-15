@@ -651,3 +651,5 @@ int main() {
 
 ## [ABC-303C](https://atcoder.jp/contests/abc303/tasks/abc303_c)
 
+## [ABC-302C](https://atcoder.jp/contests/abc302/tasks/abc302_c)
+
